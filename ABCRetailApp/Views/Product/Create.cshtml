@@ -1,0 +1,58 @@
+﻿@model ABCRetailApp.Models.Product
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h1 class="mb-5 text-white text-center">New Product</h1>
+
+<form asp-action="Create" enctype="multipart/form-data" class="form-horizontal">
+    <div class="form-group row mb-4">
+        <label asp-for="ProductName" class="col-sm-2 col-form-label text-white">Product Name</label>
+        <div class="col-sm-10">
+            <input asp-for="ProductName" class="form-control" placeholder="Enter product name" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <label asp-for="Description" class="col-sm-2 col-form-label text-white">Description</label>
+        <div class="col-sm-10">
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter product description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <label asp-for="Price" class="col-sm-2 col-form-label text-white">Price</label>
+        <div class="col-sm-10">
+            <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="Enter product price" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <label asp-for="ImageUrl" class="col-sm-2 col-form-label text-white">Image</label>
+        <div class="col-sm-10">
+            <input type="file" name="imageFile" class="form-control-file" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row mb-5">
+        <div class="col-sm-10 offset-sm-2">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary ml-2">Back to List</a>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: darkslateblue;
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        label {
+            color: white;
+        }
+    </style>
+</form>

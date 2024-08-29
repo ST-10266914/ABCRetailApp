@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ABCRetailApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<h1 class="my-4 text-center">Product List</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between mb-4">
+    <a asp-action="Create" class="btn btn-primary btn-lg">Create New Product</a>
+</div>
+
+<div class="product-list">
+    @foreach (var item in Model)
+    {
+        <div class="product-item mb-4 p-3 shadow-sm rounded d-flex align-items-center">
+            <div class="product-image">
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid rounded" style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                }
+            </div>
+            <div class="product-details ms-3 flex-grow-1">
+                <h5 class="mb-2">@item.ProductName</h5>
+                <p class="text-muted mb-2">@item.Description</p>
+                <p class="text-primary font-weight-bold">@item.Price.ToString("C")</p>
+            </div>
+            <div class="product-actions">
+                <a asp-action="Details" asp-route-rowKey="@item.RowKey" class="btn btn-info btn-sm me-2">Details</a>
+                <a asp-action="Delete" asp-route-rowKey="@item.RowKey" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        background-color: darkslateblue;
+        color: white;
+    }
+
+    .product-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-item {
+        display: flex;
+        background-color: white;
+        border: 1px solid #34495e;
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+        .product-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .product-image img {
+        border: 1px solid #34495e;
+        border-radius: 0.5rem;
+    }
+
+    .product-details h5 {
+        color:black;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .product-details p {
+        color:black;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-details .text-primary {
+        color: black; /* This will change the price color to white */
+    }
+
+    .product-actions .btn {
+        border-radius: 0.25rem;
+    }
+</style>

@@ -1,0 +1,174 @@
+﻿@model dynamic
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Retail Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color:darkslateblue;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color:;
+        }
+
+        .hero {
+            background-image: url('https://www.google.com/imgres?q=1500x500%20picture%20about%20management%20website&imgurl=https%3A%2F%2Fsweetcode.com%2Fassets%2Fimages%2Ffeatured-image-1500x500-8a70b0fc7528811f43e0bff82272ff94.png&imgrefurl=https%3A%2F%2Fsweetcode.com%2Fblog%2Ftracking-code-manager&docid=ysafPzUBLp9PZM&tbnid=7cHxiZIIS3nEOM&vet=12ahUKEwj3rrus95WIAxW0a0EAHcKvKC8QM3oECE0QAA..i&w=1500&h=500&hcb=2&ved=2ahUKEwj3rrus95WIAxW0a0EAHcKvKC8QM3oECE0QAA'); /* Replace with your desired background image */
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: #fff;
+            text-align: center;
+            background-blend-mode: multiply;
+            background-color: rgba(44, 62, 80, 0.7); /* Dark overlay */
+        }
+
+            .hero h1 {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .hero p {
+                font-size: 1.5rem;
+                margin-bottom: 40px;
+            }
+
+        .card {
+            margin-bottom: 30px;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: linear-gradient(145deg, #34495e, #2c3e50);
+            color: #ecf0f1;
+        }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+
+        .card-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background-color:darkslateblue;
+            border-color: #3498db;
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #2980b9;
+                transform: scale(1.05);
+            }
+
+        .footer {
+            padding: 30px;
+            background-color: #34495e;
+            color: #ecf0f1;
+            text-align: center;
+            margin-top: 50px;
+            border-top: 3px solid #3498db;
+        }
+
+        /* Media query for smaller screens */
+        @@media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .card-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome to ABC Retail!</h1>
+            <p>Your go-to platform for managing customer profiles and products.</p>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Profiles</h5>
+                        <p class="card-text">Manage and view customer profiles. Access detailed information about our valued customers.</p>
+                        <a href="@Url.Action("Index", "Customer")" class="btn btn-primary">View Customers</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Products</h5>
+                        <p class="card-text">Manage and view product details. Explore the products we offer and manage your inventory.</p>
+                        <a href="@Url.Action("Index", "Product")" class="btn btn-primary">View Products</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">File Management</h5>
+                        <p class="card-text">Explore and manage your file storage, ensuring your data is secure and accessible.</p>
+                        <a href="@Url.Action("Index", "Files")" class="btn btn-primary">Manage Files</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Orders</h5>
+                        <p class="card-text">Manage and view order details. Keep track of your current and previous purchases.</p>
+                        <a href="@Url.Action("Index", "Order")" class="btn btn-primary">View Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 ABC Retail. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap and jQuery scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ABCRetailApp.Models.Order>
+
+<h1 class="my-4 text-center">Orders</h1>
+
+@if (TempData["OrderSuccess"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["OrderSuccess"]
+    </div>
+}
+
+<a href="@Url.Action("Create", "Order")" class="btn btn-primary mb-3">Create New Order</a>
+
+<style>
+    h1{
+        color:white;
+    }
+
+
+    body{
+        background-color:darkslateblue;
+    }
+
+    .btn{
+        background-color: #3498db;
+    }
+
+    .table-custom {
+        background-color: #3498db;
+        color: white;
+    }
+
+        .table-custom th, .table-custom td {
+            color: white;
+        }
+</style>
+
+<table class="table table-custom">
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
+                <td>@order.CustomerId</td> <!-- Placeholder for Customer Name -->
+                <td>@order.ProductId</td> <!-- Placeholder for Product Name -->
+                <td>@order.Quantity</td>
+                <td>@order.Price.ToString("C")</td>
+                <td>@order.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
