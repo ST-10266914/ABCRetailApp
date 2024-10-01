@@ -3,6 +3,7 @@ using Azure.Storage.Blobs;
 using ABCRetailApp.Models;
 using ABCRetailApp.Services;
 using Microsoft.Extensions.Logging;
+using ABCRetailApp.Controllers;
 
 namespace ABCRetailApp
 {
@@ -14,6 +15,10 @@ namespace ABCRetailApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpClient<CustomerController>();
+            builder.Services.AddHttpClient<FilesController>();
+
 
             // Retrieve the connection string from configuration
             var storageConnectionString = builder.Configuration.GetConnectionString("AzureStorage");

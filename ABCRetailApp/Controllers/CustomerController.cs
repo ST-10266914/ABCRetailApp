@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ABCRetailApp.Models;
 using ABCRetailApp.Services;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ABCRetailApp.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly TableStorageService<CustomerProfile> _tableStorageService;
+        private readonly HttpClient _httpClient;
 
-        public CustomerController(TableStorageService<CustomerProfile> tableStorageService)
+        public CustomerController(TableStorageService<CustomerProfile> tableStorageService, HttpClient httpClient)
         {
             _tableStorageService = tableStorageService;
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> Index()
@@ -22,6 +27,24 @@ namespace ABCRetailApp.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StoreCustomer(CustomerProfile customer)
+        {
+            var json = JsonConvert.SerializeObject(customer);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("https://st10266914-poe.azurewebsites.net/api/StoreCustomerProfile?code=r4lDhDfXyaHQYje0vqDB8tX94qX5vkHtiF4Isavm4_-oAzFu_A5FAQ%3D%3D", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View("Error", new { message = "Failed to store customer profile." });
+            }
         }
 
         [HttpPost]

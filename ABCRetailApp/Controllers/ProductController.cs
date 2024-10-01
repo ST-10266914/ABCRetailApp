@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ABCRetailApp.Models;
 using ABCRetailApp.Services;
+using Newtonsoft.Json;
 
 namespace ABCRetailApp.Controllers
 {
@@ -91,6 +92,28 @@ namespace ABCRetailApp.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error saving product with RowKey: {RowKey}. Error: {ErrorMessage}", product.RowKey, ex.Message);
+                ModelState.AddModelError("", $"Error saving product: {ex.Message}");
+                return View(product);
+            }
+
+            try
+            {
+                var httpClient = new HttpClient();
+                var jsonContent = JsonConvert.SerializeObject(product);
+                var httpContent = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+
+                var response = await httpClient.PostAsync("https://st10266914-poe.azurewebsites.net/api/StoreProduct?code=r4lDhDfXyaHQYje0vqDB8tX94qX5vkHtiF4Isavm4_-oAzFu_A5FAQ%3D%3D", httpContent);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError("", $"Error saving product: {errorMessage}");
+                    return View(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error calling function to store product: {ErrorMessage}", ex.Message);
                 ModelState.AddModelError("", $"Error saving product: {ex.Message}");
                 return View(product);
             }

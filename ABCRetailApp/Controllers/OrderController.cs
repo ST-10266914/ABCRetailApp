@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Text;
 
 namespace ABCRetailApp.Controllers
 {
@@ -18,35 +19,39 @@ namespace ABCRetailApp.Controllers
         private readonly ProductService _productService;
         private readonly TableStorageService<Order> _orderTableService;
         private readonly ILogger<OrderController> _logger;
+        private readonly HttpClient _httpClient;
 
         public OrderController(
             QueueStorageService queueService,
             CustomerService customerService,
             ProductService productService,
             TableStorageService<Order> orderTableService,
-            ILogger<OrderController> logger)
+            ILogger<OrderController> logger,
+            HttpClient httpClient)
         {
             _queueService = queueService ?? throw new ArgumentNullException(nameof(queueService));
             _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _orderTableService = orderTableService ?? throw new ArgumentNullException(nameof(orderTableService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _httpClient = httpClient;
         }
 
         // GET: /Order/
         public async Task<IActionResult> Index()
-{
-    try
-    {
-        var orders = await _orderTableService.RetrieveAllEntitiesAsync(); // Fetch directly from Azure Table Storage
-        return View(orders);
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error fetching orders from table storage.");
-        return StatusCode(500, "Internal server error.");
-    }
-}
+        {
+            try
+            {
+                var orders = await _orderTableService.RetrieveAllEntitiesAsync(); // Fetch directly from Azure Table Storage
+                return View(orders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching orders from table storage.");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
         // GET: /Order/Create
         public async Task<IActionResult> Create()
         {
@@ -69,6 +74,31 @@ namespace ABCRetailApp.Controllers
                         Text = p.ProductName
                     }).ToList()
                 };
+
+                if (ModelState.IsValid)
+                {
+                    var order = new Order
+                    {
+                        RowKey = Guid.NewGuid().ToString(),
+                        CustomerId = model.SelectedCustomerId,
+                        ProductId = model.SelectedProductId,
+                        Quantity = model.Quantity,
+                        Price = model.Price,
+                        OrderDate = model.OrderDate.ToUniversalTime(),
+                        Status = "Pending"
+                    };
+
+                    var orderJson = JsonSerializer.Serialize(order);
+                    var content = new StringContent(orderJson, Encoding.UTF8, "application/json");
+
+                    var response = await _httpClient.PostAsync("https://st10266914-poe.azurewebsites.net/api/orders/send?code=r4lDhDfXyaHQYje0vqDB8tX94qX5vkHtiF4Isavm4_-oAzFu_A5FAQ%3D%3D", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        TempData["OrderSuccess"] = "Your order has been successfully placed and is now in the queue for processing.";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ModelState.AddModelError("", "Error placing order.");
+                }
 
                 return View(model);
             }
